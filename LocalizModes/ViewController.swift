@@ -12,9 +12,20 @@ class ViewController: UIViewController {
     
     // MARK: - Parameters
     
+    private let defaults = UserDefaults()
     private var languages = ["English",
                              "Russian",
                              "German"]
+    
+    private var pickerRow: Int {
+        set {
+            defaults.set(newValue, forKey: "row")
+        }
+        
+        get {
+            defaults.object(forKey: "row") as? Int ?? 0
+        }
+    }
     
     // MARK: - GUI
 
@@ -63,9 +74,10 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         self.addSubviews()
         self.setConstraints()
+        self.checkPikersPosition(row: self.pickerRow)
         self.pickerView.delegate = self
         self.pickerView.dataSource = self
-        self.pickerView.selectRow(1, inComponent: 0, animated: false)
+        self.pickerView.selectRow(self.pickerRow, inComponent: 0, animated: false)
         self.view.backgroundColor = .green
     }
     
@@ -205,6 +217,7 @@ extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource  {
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        self.pickerRow = row
         self.checkPikersPosition(row: row)
     }
 }
