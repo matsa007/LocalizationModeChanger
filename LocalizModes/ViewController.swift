@@ -63,6 +63,9 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         self.addSubviews()
         self.setConstraints()
+        self.pickerView.delegate = self
+        self.pickerView.dataSource = self
+        self.pickerView.selectRow(1, inComponent: 0, animated: false)
         self.view.backgroundColor = .green
     }
     
@@ -146,9 +149,20 @@ class ViewController: UIViewController {
             make.width.equalTo(self.darkModeButton)
         }
     }
-    
-    
-
-
 }
 
+// MARK: - Extensions
+
+extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource  {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        self.languages.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        self.languages[row]
+    }
+}
