@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  LocalizModes
+
+  Created by Сергей Матвеенко on 24.05.23.
+  
+*/
+"welcome_message" = "Hallo freund";
+"light_button" = "Lichtmodus einstellen";
+"dark_button" = "Dunkelmodus einstellen";
+"system_button" = "Systemmodus einstellen";
+"en_language" = "Englisch";
+"ru_language" = "Russisch";
+"de_language" = "Deutch";
