@@ -149,6 +149,44 @@ class ViewController: UIViewController {
             make.width.equalTo(self.darkModeButton)
         }
     }
+    
+    // MARK: - Localization
+    
+    private func checkPikersPosition(row: Int) {
+        switch row {
+        case 0:
+            self.changeLabelLang(lang: "en")
+            self.changePickerLang(lang: "en")
+            self.changeButtonsLang(lang: "en")
+        case 1:
+            self.changeLabelLang(lang: "ru")
+            self.changePickerLang(lang: "ru")
+            self.changeButtonsLang(lang: "ru")
+        case 2:
+            self.changeLabelLang(lang: "de")
+            self.changePickerLang(lang: "de")
+            self.changeButtonsLang(lang: "de")
+        default:
+            break
+        }
+    }
+    
+    private func changeLabelLang(lang: String) {
+        self.topLable.text = "welcome_message".localizeString(string: lang)
+    }
+    
+    private func changePickerLang(lang: String) {
+        self.languages = ["en_language".localizeString(string: lang), "ru_language".localizeString(string: lang), "de_language".localizeString(string: lang)]
+        DispatchQueue.main.async {
+            self.pickerView.reloadAllComponents()
+        }
+    }
+    
+    private func changeButtonsLang(lang: String) {
+        self.lightModeButton.setTitle("light_button".localizeString(string: lang), for: .normal)
+        self.darkModeButton.setTitle("dark_button".localizeString(string: lang), for: .normal)
+        self.systemModeButton.setTitle("system_button".localizeString(string: lang), for: .normal)
+    }
 }
 
 // MARK: - Extensions
@@ -164,5 +202,9 @@ extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource  {
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         self.languages[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        self.checkPikersPosition(row: row)
     }
 }
