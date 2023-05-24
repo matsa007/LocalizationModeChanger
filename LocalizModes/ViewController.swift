@@ -13,9 +13,9 @@ class ViewController: UIViewController {
     // MARK: - Parameters
     
     private let defaults = UserDefaults()
-    private var languages = ["English",
-                             "Russian",
-                             "German"]
+    private var languages = [NSLocalizedString("en_language", comment: ""),
+                             NSLocalizedString("ru_language", comment: ""),
+                             NSLocalizedString("de_language", comment: "")]
     
     private var pickerRow: Int {
         set {
