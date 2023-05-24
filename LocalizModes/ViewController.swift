@@ -103,62 +103,62 @@ class ViewController: UIViewController {
     
     private func setLabelConstaraints() {
         let label = self.topLable
-        label.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(50)
+        label.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().offset(50)
         }
     }
     
     private func setLogoConstaraints() {
         let imageView = self.logoView
-        imageView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.centerY.equalTo(self.topLable.snp.centerY).offset(50)
-            make.height.equalTo(50)
-            make.width.equalTo(50)
+        imageView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.centerY.equalTo(self.topLable.snp.centerY).offset(50)
+            $0.height.equalTo(50)
+            $0.width.equalTo(50)
         }
     }
     
     private func setPickerViewConstaraints() {
         let pickerView = self.pickerView
-        pickerView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.centerY.equalTo(self.logoView.snp.centerY).offset(70)
-            make.height.equalTo(200)
-            make.width.equalTo(200)
+        pickerView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.centerY.equalTo(self.logoView.snp.centerY).offset(70)
+            $0.height.equalTo(200)
+            $0.width.equalTo(200)
         }
     }
     
     private func setLightModeButtonConstaraints() {
         let button = self.lightModeButton
-//        button.addTarget(self, action: #selector(lightModeButtonTapped), for: .touchUpInside)
-        button.snp.makeConstraints { make in
-            make.top.equalTo(self.pickerView.snp.top).offset(160)
-            make.height.equalTo(50)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(self.view.snp.width).multipliedBy(0.8)
+        button.addTarget(self, action: #selector(lightModeButtonTapped), for: .touchUpInside)
+        button.snp.makeConstraints {
+            $0.top.equalTo(self.pickerView.snp.top).offset(160)
+            $0.height.equalTo(50)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(self.view.snp.width).multipliedBy(0.8)
         }
     }
     
     private func setDarkModeButtonConstaraints() {
         let button = self.darkModeButton
-//        button.addTarget(self, action: #selector(darkModeButtonTapped), for: .touchUpInside)
-        button.snp.makeConstraints { make in
-            make.top.equalTo(self.lightModeButton.snp.bottom).offset(5)
-            make.height.equalTo(50)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(self.lightModeButton)
+        button.addTarget(self, action: #selector(darkModeButtonTapped), for: .touchUpInside)
+        button.snp.makeConstraints {
+            $0.top.equalTo(self.lightModeButton.snp.bottom).offset(5)
+            $0.height.equalTo(50)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(self.lightModeButton)
         }
     }
     
     private func setSystemModeButtonConstaraints() {
         let button = self.systemModeButton
-//        button.addTarget(self, action: #selector(systemModeButtonTapped), for: .touchUpInside)
-        button.snp.makeConstraints { make in
-            make.top.equalTo(self.darkModeButton.snp.bottom).offset(5)
-            make.height.equalTo(50)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(self.darkModeButton)
+        button.addTarget(self, action: #selector(systemModeButtonTapped), for: .touchUpInside)
+        button.snp.makeConstraints {
+            $0.top.equalTo(self.darkModeButton.snp.bottom).offset(5)
+            $0.height.equalTo(50)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(self.darkModeButton)
         }
     }
     
@@ -199,6 +199,17 @@ class ViewController: UIViewController {
         self.darkModeButton.setTitle("dark_button".localizeString(string: lang), for: .normal)
         self.systemModeButton.setTitle("system_button".localizeString(string: lang), for: .normal)
     }
+    
+    // MARK: - UI updating
+
+    private func isSystemDarkMode() -> Bool {
+        if let windowScene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+            if let currentTraitCollection = windowScene.windows.first?.traitCollection {
+                return currentTraitCollection.userInterfaceStyle == .dark
+            }
+        }
+        return false
+    }
 }
 
 // MARK: - Extensions
@@ -219,5 +230,26 @@ extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource  {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         self.pickerRow = row
         self.checkPikersPosition(row: row)
+    }
+}
+
+// MARK: - IBActions
+
+extension ViewController {
+    @objc func lightModeButtonTapped() {
+        self.overrideUserInterfaceStyle = .light
+    }
+    
+    @objc func darkModeButtonTapped() {
+        self.overrideUserInterfaceStyle = .dark
+    }
+    
+    @objc func systemModeButtonTapped() {
+        switch self.isSystemDarkMode() {
+        case true:
+            self.overrideUserInterfaceStyle = .dark
+        case false:
+            self.overrideUserInterfaceStyle = .light
+        }
     }
 }
