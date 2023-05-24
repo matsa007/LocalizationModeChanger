@@ -78,7 +78,19 @@ class ViewController: UIViewController {
         self.pickerView.delegate = self
         self.pickerView.dataSource = self
         self.pickerView.selectRow(self.pickerRow, inComponent: 0, animated: false)
-        self.view.backgroundColor = .green
+        self.checkForUserModeAndChangeColor()
+        self.changeButtonsColor()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        self.checkForUserModeAndChangeColor()
+        self.changeButtonsColor()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        self.view.layoutIfNeeded()
     }
     
     // MARK: - Constraints
@@ -209,6 +221,37 @@ class ViewController: UIViewController {
             }
         }
         return false
+    }
+    
+    private func checkForUserModeAndChangeColor() {
+        if self.traitCollection.userInterfaceStyle == .dark {
+            self.view.backgroundColor = .darkGray
+        } else {
+            self.view.backgroundColor = .lightGray
+        }
+    }
+    
+    private func changeButtonsColor() {
+        let currentMode = self.traitCollection.userInterfaceStyle
+        
+        switch currentMode {
+        case .dark:
+            self.lightModeButton.backgroundColor = .lightGray
+            self.darkModeButton.backgroundColor = .lightGray
+            self.systemModeButton.backgroundColor = .lightGray
+        case .light:
+            self.lightModeButton.backgroundColor = .darkGray
+            self.darkModeButton.backgroundColor = .darkGray
+            self.systemModeButton.backgroundColor = .darkGray
+        case .unspecified:
+            self.lightModeButton.backgroundColor = .darkGray
+            self.darkModeButton.backgroundColor = .darkGray
+            self.systemModeButton.backgroundColor = .darkGray
+        @unknown default:
+            self.lightModeButton.backgroundColor = .darkGray
+            self.darkModeButton.backgroundColor = .darkGray
+            self.systemModeButton.backgroundColor = .darkGray
+        }
     }
 }
 
